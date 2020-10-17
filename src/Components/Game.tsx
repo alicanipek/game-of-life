@@ -1,5 +1,6 @@
-import React, { ReactElement, useState } from "react";
-import Board from "./Board";
+import React, { ReactElement, useState } from 'react';
+import Board from './Board';
+import _ from 'lodash';
 
 interface Props {
     row: number;
@@ -54,7 +55,12 @@ function Game({ row, col }: Props): ReactElement {
         if (!isPlaying) return;
         else {
             setTimeout(() => {
+                let updatedBoard = updateBoard(board);
                 setBoard(updateBoard(board));
+                if (_.isEqual(board, updatedBoard)) {
+                    console.log('stopped');
+                    setIsPlaying(false);
+                }
             }, 200);
         }
     });
@@ -74,8 +80,9 @@ function Game({ row, col }: Props): ReactElement {
     return (
         <>
             <Board board={board} onClick={(e, r, c) => handleClick(r, c)} />
+            <button onClick={handleReset}>Draw Grid</button>
             <button onClick={handleStart}>
-                {isPlaying ? "Stop" : "Start"}
+                {isPlaying ? 'Stop Animation' : 'Start Animation'}
             </button>
             <button onClick={handleReset}>Reset</button>
         </>
